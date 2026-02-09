@@ -1,11 +1,11 @@
 # Godot-Editor-Settings-Description
 Allow you to set a description on a custom project and editor settings. Useful for making a settings for a plugin.
 
-Currently, [godot didn't allow you to add description to a custom project/editor settings](https://github.com/godotengine/godot-proposals/discussions/8224). So I made this as a temporary fix.
+Currently, [godot didn't allow you to add description to a custom project/editor settings](https://github.com/godotengine/godot-proposals/discussions/8224). this as a temporary fix original by PiCode.
 
 This is made for an extension of your plugin, so add this to your plugin folder, and the description will be displayed as long as the plugin is in the project.
 
-> Tested on godot 4.1 and above.
+> Tested on godot 4.6.
 
 <img width="1202" height="739" alt="image" src="https://github.com/user-attachments/assets/b7fd1666-1c38-4822-9a49-a511c6753206" />
 
@@ -16,17 +16,18 @@ This meant to be as lightweight as possible in term of storage and also cpu and 
 - Download the script file.
 - Place them into your plugin folder (e.g. `addons/my_plugin/...`)
 # Usage
-Preload the script and use the script's `set_editor_setting_desc()` or `set_project_setting_desc()` method to set the description of your custom settings.
+Preload the script and use the script's `set_editor_setting_tooltip()` or `set_project_setting_tooltip()` method to set the description of your custom settings.
 ### Example:
 ```gdscript
-func _enter_tree() -> void:
+func _ready() -> void:
+	## Get Script:
+	const SETTINGS_TOOLTIPS = preload("path/to/info.gd")
 
-	var EditorSettingsDescription = preload("editor_settings_description.gd")
-  ## Editor setting description.
-	EditorSettingsDescription.set_editor_setting_desc("category/custom_editor_setting","This is a test [b]editor setting[/b] with a description.")
-  ## Project setting description.
-	EditorSettingsDescription.set_project_setting_desc("category/custom_project_setting","This is a test [b]project setting[/b] with a description.")
+	## For Add editor Setting Tooltip
+	SETTINGS_TOOLTIPS.set_editor_setting_tooltip("key_setting", "description for the setting")
 
+	## For Add Project Setting Tooltip
+	SETTINGS_TOOLTIPS.set_project_setting_tooltip("key_setting", "description for the setting")
 ```
 
 # Implementation detail.
