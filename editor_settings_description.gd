@@ -70,7 +70,7 @@ func _on_change(node : Node) -> void:
 		elif node == _project_setting_inspector:
 			_on_project_inspector_changed()
 
-func _setup() -> void:
+func _setup_editor() -> void:
 	for x : Node in EditorInterface.get_base_control().find_children("*", "EditorSettingsDialog", true, false):
 		for y : Node in x.find_children("*", "SectionedInspector", true, false):
 			var control : Node = y.find_child("EditorInspector", true, false)
@@ -80,7 +80,9 @@ func _setup() -> void:
 				_editor_setting_inspector = control
 				root.cell_selected.connect(_on_editor_inspector_changed)
 				_editor_setting_inspector.visibility_changed.connect(_on_change.bind(_editor_setting_inspector))
-			
+				return
+				
+func _setup_project() -> void:
 	for x : Node in EditorInterface.get_base_control().find_children("*", "ProjectSettingsEditor", true, false):
 		for y : Node in x.find_children("*", "General", true, false):
 			for z : Node in y.find_children("*","SectionedInspector",true,false):
@@ -90,8 +92,12 @@ func _setup() -> void:
 				if is_instance_valid(control) and is_instance_valid(root) and root is Tree:
 					_project_setting_inspector = control
 					root.cell_selected.connect(_on_project_inspector_changed)
-					_project_setting_inspector.visibility_changed.connect(_on_change.bind(_editor_setting_inspector))
-	
+					_project_setting_inspector.visibility_changed.connect(_on_change.bind(_project_setting_inspector))
+					return
+
+func _setup() -> void:
+	_setup_editor()
+	_setup_project()
 	_on_editor_inspector_changed()
 	
 func _on_editor_inspector_changed() -> void:
